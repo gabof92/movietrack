@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Movie Track</string>
+    <string name="create_bucket_list">Create bucket list</string>
 </resources>
