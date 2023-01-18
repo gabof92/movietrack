@@ -17,7 +17,6 @@ class MyBucketRecyclerViewAdapter(
 ) : RecyclerView.Adapter<MyBucketRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-
         return ViewHolder(
             BucketListItemBinding.inflate(
                 LayoutInflater.from(parent.context),
@@ -25,7 +24,6 @@ class MyBucketRecyclerViewAdapter(
                 false
             )
         )
-
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -41,9 +39,6 @@ class MyBucketRecyclerViewAdapter(
         val name: TextView = binding.bucketName
         val movieQuantity: TextView = binding.bucketMovieQuantity
 
-        override fun toString(): String {
-            return super.toString() + " '" + movieQuantity.text + "'"
-        }
     }
 
 }

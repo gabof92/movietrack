@@ -19,14 +19,8 @@ class BucketsFragment : Fragment() {
     private var _binding: BucketListFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private var columnCount = 1
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        arguments?.let {
-            columnCount = it.getInt(ARG_COLUMN_COUNT)
-        }
 
     }
 
@@ -41,28 +35,11 @@ class BucketsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // Set the adapter
+        // Set the adapter & layout manager
         with(binding.recyclerView) {
-            layoutManager = when {
-                columnCount <= 1 -> LinearLayoutManager(context)
-                else -> GridLayoutManager(context, columnCount)
-            }
+            layoutManager = LinearLayoutManager(context)
             adapter = MyBucketRecyclerViewAdapter(PlaceholderContent.ITEMS)
         }
     }
 
-    companion object {
-
-        // TODO: Customize parameter argument names
-        const val ARG_COLUMN_COUNT = "column-count"
-
-        // TODO: Customize parameter initialization
-        @JvmStatic
-        fun newInstance(columnCount: Int) =
-            BucketsFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_COLUMN_COUNT, columnCount)
-                }
-            }
-    }
 }
