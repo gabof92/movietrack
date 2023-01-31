@@ -6,7 +6,7 @@
     app:startDestination="@id/bucketsFragment">
     <fragment
         android:id="@+id/bucketsFragment"
-        android:name="com.bit45.movietrack.BucketsFragment"
+        android:name="com.bit45.movietrack.ui.BucketListFragment"
         android:label="@string/app_name"
         tools:layout="@layout/bucket_list_fragment" />
 </navigation>
