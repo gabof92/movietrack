@@ -1,4 +1,4 @@
-package com.bit45.movietrack.data.entity
+package com.bit45.movietrack.model.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

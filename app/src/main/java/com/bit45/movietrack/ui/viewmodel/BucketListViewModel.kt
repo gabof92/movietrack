@@ -1,8 +1,9 @@
-package com.bit45.movietrack.viewmodel
+package com.bit45.movietrack.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.bit45.movietrack.data.dao.BucketDao
+import com.bit45.movietrack.model.entity.Bucket
 import com.bit45.movietrack.model.BucketWithMovies
 import kotlinx.coroutines.flow.Flow
 
@@ -11,6 +12,8 @@ class BucketListViewModel(
 ) : ViewModel() {
 
     fun getBuckets(): Flow<List<BucketWithMovies>> = bucketDao.getAllBucketsWithMovies()
+
+    suspend fun saveBucket(bucket: Bucket) = bucketDao.insert(bucket)
 
 }
 

@@ -8,11 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.coroutineScope
-import com.bit45.movietrack.adapter.BucketRecyclerViewAdapter
+import com.bit45.movietrack.ui.adapter.BucketRecyclerViewAdapter
 import com.bit45.movietrack.MovieTrackApplication
 import com.bit45.movietrack.databinding.BucketListFragmentBinding
-import com.bit45.movietrack.viewmodel.BucketListViewModel
-import com.bit45.movietrack.viewmodel.BucketListViewModelFactory
+import com.bit45.movietrack.ui.viewmodel.BucketListViewModel
+import com.bit45.movietrack.ui.viewmodel.BucketListViewModelFactory
 import kotlinx.coroutines.launch
 
 /**
@@ -40,11 +40,13 @@ class BucketListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         // Set the adapter & layout manager
         val recyclerView = binding.recyclerView
         val adapter = BucketRecyclerViewAdapter()
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
+
         //Assign a list to the adapter (from database, so running in coroutine)
         lifecycle.coroutineScope.launch {
             viewModel.getBuckets().collect()
@@ -52,6 +54,12 @@ class BucketListFragment : Fragment() {
                 adapter.submitList(it)
             }
         }
+
+        binding.createBucketButton.setOnClickListener {
+            val createBucketDialog = CreateBucketDialogFragment.newInstance()
+            createBucketDialog.show(parentFragmentManager, "Create Bucket")
+        }
+
     }
 
 }

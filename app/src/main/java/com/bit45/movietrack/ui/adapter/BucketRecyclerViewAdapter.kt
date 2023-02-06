@@ -1,4 +1,4 @@
-package com.bit45.movietrack.adapter
+package com.bit45.movietrack.ui.adapter
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater

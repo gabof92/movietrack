@@ -1,7 +1,7 @@
 package com.bit45.movietrack.data.dao
 
 import androidx.room.*
-import com.bit45.movietrack.data.entity.Bucket
+import com.bit45.movietrack.model.entity.Bucket
 import com.bit45.movietrack.model.BucketWithMovies
 import kotlinx.coroutines.flow.Flow
 
@@ -22,7 +22,7 @@ interface BucketDao {
     /** Since @Relation fields are queried separately. Need to run all queries
      * in a single transaction to receive consistent results.*/
     @Transaction
-    @Query("SELECT * FROM bucket")
+    @Query("SELECT * FROM bucket ORDER BY id DESC")
     fun getAllBucketsWithMovies(): Flow<List<BucketWithMovies>>
 
     @Query("SELECT * FROM bucket")
