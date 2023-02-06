@@ -1,7 +1,7 @@
 package com.bit45.movietrack.data.dao
 
 import androidx.room.*
-import com.bit45.movietrack.data.entity.Movie
+import com.bit45.movietrack.model.entity.Movie
 import kotlinx.coroutines.flow.Flow
 
 @Dao

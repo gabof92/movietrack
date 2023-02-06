@@ -7,9 +7,9 @@ import androidx.room.RoomDatabase
 import com.bit45.movietrack.data.dao.BucketDao
 import com.bit45.movietrack.data.dao.BucketMovieDao
 import com.bit45.movietrack.data.dao.MovieDao
-import com.bit45.movietrack.data.entity.Bucket
-import com.bit45.movietrack.data.entity.BucketMovie
-import com.bit45.movietrack.data.entity.Movie
+import com.bit45.movietrack.model.entity.Bucket
+import com.bit45.movietrack.model.entity.BucketMovie
+import com.bit45.movietrack.model.entity.Movie
 
 @Database(entities = [Bucket::class, Movie::class, BucketMovie::class],
     version = 1)

@@ -1,11 +1,10 @@
-package com.bit45.movietrack.ui
+package com.bit45.movietrack
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
-import com.bit45.movietrack.R
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
