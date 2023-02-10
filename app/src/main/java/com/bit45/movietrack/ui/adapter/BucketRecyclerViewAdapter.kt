@@ -11,16 +11,22 @@ import com.bit45.movietrack.model.BucketWithMovies
 
 
 class BucketRecyclerViewAdapter(
+    private val onItemClicked: (BucketWithMovies) -> Unit
 ) : ListAdapter<BucketWithMovies, BucketRecyclerViewAdapter.BucketViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BucketViewHolder {
-        return BucketViewHolder(
+        val viewHolder = BucketViewHolder(
             BucketListItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             )
         )
+        viewHolder.itemView.setOnClickListener{
+            val position = viewHolder.bindingAdapterPosition
+            onItemClicked(getItem(position))
+        }
+        return viewHolder
     }
 
     override fun onBindViewHolder(holder: BucketViewHolder, position: Int) {
