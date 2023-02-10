@@ -4,6 +4,9 @@ plugins {
 
     //for room dependency that uses kapt
     id 'kotlin-kapt'
+
+    //for navigation auto-generated classes
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
@@ -58,4 +61,5 @@ dependencies {
     implementation "androidx.room:room-runtime:2.4.0"
     kapt "androidx.room:room-compiler:2.4.0"
     implementation "androidx.room:room-ktx:2.4.0"
+
 }

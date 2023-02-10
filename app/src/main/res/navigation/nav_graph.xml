@@ -3,10 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph.xml"
-    app:startDestination="@id/bucketsFragment">
+    app:startDestination="@id/bucketListFragment">
     <fragment
-        android:id="@+id/bucketsFragment"
+        android:id="@+id/bucketListFragment"
         android:name="com.bit45.movietrack.ui.BucketListFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/bucket_list_fragment" />
+        tools:layout="@layout/bucket_list_fragment" >
+        <action
+            android:id="@+id/action_bucketsFragment_to_bucketDetailFragment"
+            app:destination="@id/bucketDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bucketDetailFragment"
+        android:name="com.bit45.movietrack.ui.BucketDetailFragment"
+        android:label="Bucket Name Here"
+        tools:layout="@layout/fragment_bucket_detail">
+        <argument
+            android:name="bucketId"
+            app:argType="integer" />
+    </fragment>
 </navigation>

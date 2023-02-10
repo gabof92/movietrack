@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.coroutineScope
+import androidx.navigation.findNavController
 import com.bit45.movietrack.ui.adapter.BucketRecyclerViewAdapter
 import com.bit45.movietrack.MovieTrackApplication
 import com.bit45.movietrack.databinding.BucketListFragmentBinding
@@ -41,25 +42,27 @@ class BucketListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Set the adapter & layout manager
         val recyclerView = binding.recyclerView
-        val adapter = BucketRecyclerViewAdapter()
+        //The adapter receives the action that every item will do when clicked
+        val adapter = BucketRecyclerViewAdapter { openDialogFragment(it.bucket.id!!, view) }
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
 
         //Assign a list to the adapter (from database, so running in coroutine)
         lifecycle.coroutineScope.launch {
-            viewModel.getBuckets().collect()
-            {
-                adapter.submitList(it)
-            }
+            viewModel.getBuckets().collect() { adapter.submitList(it) }
         }
 
         binding.createBucketButton.setOnClickListener {
             val createBucketDialog = CreateBucketDialogFragment.newInstance()
-            createBucketDialog.show(parentFragmentManager, "Create Bucket")
+            createBucketDialog.show(parentFragmentManager, "create_bucket_dialog")
         }
+    }
 
+    private fun openDialogFragment(bucketId: Int, view: View){
+        val action = BucketListFragmentDirections
+            .actionBucketsFragmentToBucketDetailFragment(bucketId)
+        view.findNavController().navigate(action)
     }
 
 }
