@@ -4,60 +4,49 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.bit45.movietrack.R
+import com.bit45.movietrack.databinding.FragmentMovieListBinding
+import com.bit45.movietrack.model.entity.Movie
 import com.bit45.movietrack.ui.adapter.MovieListAdapter
-import com.bit45.movietrack.ui.placeholder.PlaceholderContent
 
 /**
  * A fragment representing a list of Items.
  */
 class MovieListFragment : Fragment() {
 
+    private var _binding: FragmentMovieListBinding? = null
+    private val binding get() = _binding!!
+
     private var columnCount = 3
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        arguments?.let {
-            columnCount = it.getInt(ARG_COLUMN_COUNT)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.movie_list_fragment, container, false)
+        _binding = FragmentMovieListBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        // Set the adapter
-        if (view is RecyclerView) {
-            with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
-                adapter = MovieListAdapter(PlaceholderContent.ITEMS)
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val recyclerView = binding.list
+        //The adapter receives the action that every item will do when clicked
+        recyclerView.adapter = MovieListAdapter {
+            //TODO implement movie item onClick
         }
-        return view
+
+        recyclerView.layoutManager = when {
+            columnCount <= 1 -> LinearLayoutManager(context)
+            else -> GridLayoutManager(context, columnCount)
+        }
     }
 
-    companion object {
-
-        // TODO: Customize parameter argument names
-        const val ARG_COLUMN_COUNT = "column-count"
-
-        // TODO: Customize parameter initialization
-        @JvmStatic
-        fun newInstance(columnCount: Int) =
-            MovieListFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_COLUMN_COUNT, columnCount)
-                }
-            }
+    fun submitList(movies: List<Movie>){
+        val adapter = binding.list.adapter as MovieListAdapter
+        adapter.submitList(movies)
     }
+
 }

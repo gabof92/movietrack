@@ -20,10 +20,15 @@ interface BucketDao {
     fun getBucket(id: Int): Flow<Bucket>
 
     /** Since @Relation fields are queried separately. Need to run all queries
-     * in a single transaction to receive consistent results.*/
+     * in a single @transaction to receive consistent results.*/
+    @Transaction
+    @Query("SELECT * FROM bucket WHERE id = :id ORDER BY id DESC")
+    fun getBucketWithMovies(id: Int): Flow<BucketWithMovies>
+
     @Transaction
     @Query("SELECT * FROM bucket ORDER BY id DESC")
     fun getAllBucketsWithMovies(): Flow<List<BucketWithMovies>>
+
 
     @Query("SELECT * FROM bucket")
     fun getAllBucketsFlow(): Flow<List<Bucket>>

@@ -9,9 +9,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.coroutineScope
 import androidx.navigation.findNavController
-import com.bit45.movietrack.ui.adapter.BucketRecyclerViewAdapter
+import com.bit45.movietrack.ui.adapter.BucketListAdapter
 import com.bit45.movietrack.MovieTrackApplication
-import com.bit45.movietrack.databinding.BucketListFragmentBinding
+import com.bit45.movietrack.databinding.FragmentBucketListBinding
 import com.bit45.movietrack.ui.viewmodel.BucketListViewModel
 import com.bit45.movietrack.ui.viewmodel.BucketListViewModelFactory
 import kotlinx.coroutines.launch
@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
  */
 class BucketListFragment : Fragment() {
 
-    private var _binding: BucketListFragmentBinding? = null
+    private var _binding: FragmentBucketListBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: BucketListViewModel by activityViewModels {
@@ -35,7 +35,7 @@ class BucketListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = BucketListFragmentBinding.inflate(inflater, container, false)
+        _binding = FragmentBucketListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -44,7 +44,7 @@ class BucketListFragment : Fragment() {
 
         val recyclerView = binding.recyclerView
         //The adapter receives the action that every item will do when clicked
-        val adapter = BucketRecyclerViewAdapter { openDialogFragment(it.bucket.id!!, view) }
+        val adapter = BucketListAdapter { openDialogFragment(it.bucket.id!!, view) }
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
 

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:name="com.bit45.movietrack.BucketDetailFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -9,10 +10,11 @@
     tools:context=".ui.BucketDetailFragment">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/bucket_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="This is a list of 100 movies taken from a physical scratch-off poster we got from amazon that is on our living room wall" />
+        tools:text="This is a list of 100 movies taken from a physical
+        scratch-off poster we got from amazon that is on our living room wall" />
 
     <LinearLayout
         android:layout_width="match_parent"
