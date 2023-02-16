@@ -10,9 +10,9 @@ import com.bit45.movietrack.databinding.BucketListItemBinding
 import com.bit45.movietrack.model.BucketWithMovies
 
 
-class BucketRecyclerViewAdapter(
+class BucketListAdapter(
     private val onItemClicked: (BucketWithMovies) -> Unit
-) : ListAdapter<BucketWithMovies, BucketRecyclerViewAdapter.BucketViewHolder>(DiffCallback) {
+) : ListAdapter<BucketWithMovies, BucketListAdapter.BucketViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BucketViewHolder {
         val viewHolder = BucketViewHolder(

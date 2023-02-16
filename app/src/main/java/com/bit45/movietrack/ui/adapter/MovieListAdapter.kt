@@ -3,22 +3,18 @@ package com.bit45.movietrack.ui.adapter
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import com.bit45.movietrack.databinding.MovieListItemBinding
+import com.bit45.movietrack.model.entity.Movie
 
-import com.bit45.movietrack.ui.placeholder.PlaceholderContent.PlaceholderItem
-
-/**
- * [RecyclerView.Adapter] that can display a [PlaceholderItem].
- * TODO: Replace the implementation with code for your data type.
- */
 class MovieListAdapter(
-    private val values: List<PlaceholderItem>
-) : RecyclerView.Adapter<MovieListAdapter.ViewHolder>() {
+    private val onItemClicked: (Movie) -> Unit
+) : ListAdapter<Movie, MovieListAdapter.MovieViewHolder>(DiffCallback) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
 
-        return ViewHolder(
+        val viewHolder = MovieViewHolder(
             MovieListItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
@@ -26,20 +22,36 @@ class MovieListAdapter(
             )
         )
 
+        viewHolder.itemView.setOnClickListener{
+            val position = viewHolder.bindingAdapterPosition
+            onItemClicked(getItem(position))
+        }
+
+        return viewHolder
+
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = values[position]
-        holder.contentView.text = item.content
+    override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
+        val item = getItem(position)
+        holder.bind(item)
     }
 
-    override fun getItemCount(): Int = values.size
+    inner class MovieViewHolder(private var binding: MovieListItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(movie: Movie) {
+            binding.movieName.text = movie.name
+        }
+    }
 
-    inner class ViewHolder(binding: MovieListItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        val contentView: TextView = binding.movieName
+    companion object {
+        private val DiffCallback = object : DiffUtil.ItemCallback<Movie>() {
+            override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+                return oldItem.id == newItem.id
+            }
 
-        override fun toString(): String {
-            return super.toString() + " '" + contentView.text + "'"
+            override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+                return oldItem == newItem
+            }
         }
     }
 
