@@ -50,11 +50,11 @@ class BucketListFragment : Fragment() {
 
         //Assign a list to the adapter (from database, so running in coroutine)
         lifecycle.coroutineScope.launch {
-            viewModel.getBuckets().collect() { adapter.submitList(it) }
+            viewModel.getBucketList().collect() { adapter.submitList(it) }
         }
 
         binding.createBucketButton.setOnClickListener {
-            val createBucketDialog = CreateBucketDialogFragment.newInstance()
+            val createBucketDialog = CreateBucketDialogFragment.newInstance(null)
             createBucketDialog.show(parentFragmentManager, "create_bucket_dialog")
         }
     }

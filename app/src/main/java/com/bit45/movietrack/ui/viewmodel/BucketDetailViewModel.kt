@@ -18,7 +18,7 @@ class BucketDetailViewModel(
         return bucket
     }
 
-    suspend fun saveBucket(bucket: Bucket) = bucketDao.insert(bucket)
+    suspend fun deleteBucket(bucket: Bucket) = bucketDao.delete(bucket)
 
 }
 

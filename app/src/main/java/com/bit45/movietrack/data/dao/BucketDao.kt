@@ -17,7 +17,10 @@ interface BucketDao {
     suspend fun delete(bucket: Bucket)
 
     @Query("SELECT * FROM bucket WHERE id = :id")
-    fun getBucket(id: Int): Flow<Bucket>
+    fun getBucketFlow(id: Int): Flow<Bucket>
+
+    @Query("SELECT * FROM bucket WHERE id = :id")
+    suspend fun getBucket(id: Int): Bucket
 
     /** Since @Relation fields are queried separately. Need to run all queries
      * in a single @transaction to receive consistent results.*/

@@ -17,9 +17,7 @@ import com.bit45.movietrack.ui.viewmodel.BucketListViewModel
 import com.bit45.movietrack.ui.viewmodel.BucketListViewModelFactory
 import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
+private const val ARG_BUCKET_ID = "bucketId"
 
 /**
  * A simple [Fragment] subclass.
@@ -37,13 +35,15 @@ class CreateBucketDialogFragment : DialogFragment() {
         )
     }
 
-    // TODO: Rename and change types of parameters
-    private var param1: Int? = null
+    private var bucketId: Int? = null
+    private var bucket = Bucket(null, "", "")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getInt(ARG_PARAM1)
+            bucketId = it.getInt(ARG_BUCKET_ID)
+            if(bucketId == 0)
+                bucketId = null
         }
     }
 
@@ -58,19 +58,28 @@ class CreateBucketDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.buttonSave.setOnClickListener { saveButtonAction() }
+
+        bucketId?.let {
+            lifecycleScope.launch {
+                bucket = viewModel.getBucket(it)
+                requireActivity().runOnUiThread {
+                    binding.nameInputLayout.editText?.setText(bucket.name)
+                    binding.descInputLayout.editText?.setText(bucket.description)
+                }
+            }
+        }
     }
 
     private fun saveButtonAction() {
-        val name = binding.bucketName.text.toString()
-        val description = binding.bucketDescription.text.toString()
+        bucket.name = binding.bucketName.text.toString()
+        bucket.description = binding.bucketDescription.text.toString()
 
-        if (name.isBlank()) {
+        if (bucket.name.isBlank()) {
             binding.nameInputLayout.error = "Name can't be empty or blank"
         } else {
             binding.nameInputLayout.error = null
             lifecycleScope.launch {
-                val bucket = Bucket(null, name, description)
-                if(insertBucket(bucket))
+                if (insertOrUpdate())
                     closeDialog()
                 else
                     showInsertErrorMessage()
@@ -78,42 +87,50 @@ class CreateBucketDialogFragment : DialogFragment() {
         }
     }
 
-    private suspend fun insertBucket(bucket: Bucket) : Boolean{
+    private suspend fun insertOrUpdate(): Boolean {
         enableSaveButton(false)
-        var result: Boolean
-        try {
-            viewModel.saveBucket(bucket)
-            result = true
+        val result = try {
+            if (bucket.id == null)
+                viewModel.insertBucket(bucket)
+            else
+                viewModel.updateBucket(bucket)
+            true
         } catch (e: Exception) {
-            Log.e("InsertTransaction", "Error inserting bucket: $e")
-            result = false
+            Log.e("InsertTransaction", "Error inserting/updating bucket: $e")
+            false
         }
         enableSaveButton(true)
         return result
     }
 
-    private fun enableSaveButton(enable: Boolean){
+    private fun enableSaveButton(enable: Boolean) {
         requireActivity().runOnUiThread { binding.buttonSave.isEnabled = enable }
     }
 
-    private fun showInsertErrorMessage(){
-        Toast.makeText(requireContext(), "There was an error creating the list", Toast.LENGTH_LONG).show()
+    private fun showInsertErrorMessage() {
+        Toast.makeText(
+            requireContext(),
+            "There was an error updating the database",
+            Toast.LENGTH_LONG
+        )
+            .show()
     }
 
-    private fun closeDialog(){
+    private fun closeDialog() {
         requireActivity().runOnUiThread { dismiss() }
     }
 
     companion object {
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(
-            //param1: Int
+            bucketId: Int?
         ) =
             CreateBucketDialogFragment().apply {
-                /**arguments = Bundle().apply {
-                putInt(ARG_PARAM1, param1)
-                }*/
+                arguments = Bundle().apply {
+                    if (bucketId != null) {
+                        putInt(ARG_BUCKET_ID, bucketId)
+                    }
+                }
             }
     }
 }

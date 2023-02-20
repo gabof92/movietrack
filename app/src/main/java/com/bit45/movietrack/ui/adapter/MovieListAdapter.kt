@@ -3,6 +3,7 @@ package com.bit45.movietrack.ui.adapter
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.bit45.movietrack.databinding.MovieListItemBinding
@@ -40,6 +41,7 @@ class MovieListAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(movie: Movie) {
             binding.movieName.text = movie.name
+            binding.isWatchedIcon.isVisible = movie.isWatched
         }
     }
 

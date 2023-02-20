@@ -9,7 +9,7 @@ data class Bucket(
     @PrimaryKey(autoGenerate = true)
     val id: Int?,
     @ColumnInfo
-    val name: String,
+    var name: String,
     @ColumnInfo
-    val description: String
+    var description: String
 )
