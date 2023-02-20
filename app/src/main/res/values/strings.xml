@@ -2,4 +2,6 @@
     <string name="app_name">Movie Track</string>
     <string name="create_bucket_list">Create bucket list</string>
     <string name="add_movie">Add movie to list</string>
+    <string name="edit">Edit List Info</string>
+    <string name="delete">Delete</string>
 </resources>

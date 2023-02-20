@@ -7,27 +7,47 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="8dp">
+        android:layout_height="wrap_content">
 
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/movie_poster"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/avengers_poster"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/movie_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:textSize="12sp"
+                tools:text="Avengers: Age of Ultron" />
+
+        </LinearLayout>
 
         <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
+            android:id="@+id/is_watched_icon"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/avengers_poster" />
+            app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_watched"
+            tools:ignore="ContentDescription" />
 
-        <TextView
-            android:id="@+id/movie_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?attr/textAppearanceListItem"
-            android:textSize="12sp"
-            tools:text="Avengers: Age of Ultron" />
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

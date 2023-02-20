@@ -11,9 +11,13 @@ class BucketListViewModel(
     private val bucketDao: BucketDao,
 ) : ViewModel() {
 
-    fun getBuckets(): Flow<List<BucketWithMovies>> = bucketDao.getAllBucketsWithMovies()
+    fun getBucketList(): Flow<List<BucketWithMovies>> = bucketDao.getAllBucketsWithMovies()
 
-    suspend fun saveBucket(bucket: Bucket) = bucketDao.insert(bucket)
+    suspend fun getBucket(id: Int): Bucket = bucketDao.getBucket(id)
+
+    suspend fun insertBucket(bucket: Bucket) = bucketDao.insert(bucket)
+
+    suspend fun updateBucket(bucket: Bucket) = bucketDao.update(bucket)
 
 }
 
