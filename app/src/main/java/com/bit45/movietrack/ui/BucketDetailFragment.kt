@@ -69,13 +69,19 @@ class BucketDetailFragment : Fragment() {
             if(it==null) return@onEach
 
             bucket = it.bucket
+
+            //Update views in this fragment
             (activity as MainActivity).supportActionBar?.title = bucket?.name
             binding.bucketDescription.text = bucket?.description
+
+            //Pass movie list to MovieListFragment's list adapter
             val movieFragment = childFragmentManager
                 .findFragmentById(binding.movieListContainer.id)
             as MovieListFragment
             movieFragment.submitList(it.movies)
+
         }.launchIn(lifecycle.coroutineScope)
+
     }
 
     private fun setUpMenu(){
