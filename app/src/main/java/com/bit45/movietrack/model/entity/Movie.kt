@@ -3,6 +3,7 @@ package com.bit45.movietrack.model.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.squareup.moshi.Json
 
 @Entity(tableName = "movie")
 data class Movie(
@@ -11,11 +12,13 @@ data class Movie(
     @PrimaryKey
     var id: Int,
 
-    var name: String,
 
-    var image: String,
+    @Json(name = "original_title") var name: String,
+
+
+    @Json(name = "poster_path") var image: String?,
 
     @ColumnInfo(name = "is_watched")
-    var isWatched: Boolean,
+    @Transient var isWatched: Boolean = false,
 
-)
+    )
