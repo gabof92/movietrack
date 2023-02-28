@@ -44,7 +44,7 @@ class BucketListFragment : Fragment() {
 
         val recyclerView = binding.recyclerView
         //The adapter receives the action that every item will do when clicked
-        val adapter = BucketListAdapter { openDialogFragment(it.bucket.id!!, view) }
+        val adapter = BucketListAdapter { openBucketDetail(it.bucket.id!!, view) }
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
 
@@ -59,7 +59,7 @@ class BucketListFragment : Fragment() {
         }
     }
 
-    private fun openDialogFragment(bucketId: Int, view: View){
+    private fun openBucketDetail(bucketId: Int, view: View){
         val action = BucketListFragmentDirections
             .actionBucketsFragmentToBucketDetailFragment(bucketId)
         view.findNavController().navigate(action)
