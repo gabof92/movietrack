@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import com.bit45.movietrack.databinding.FragmentMovieListBinding
 import com.bit45.movietrack.model.entity.Movie
 import com.bit45.movietrack.ui.adapter.MovieListAdapter
@@ -35,7 +36,10 @@ class MovieListFragment : Fragment() {
         val recyclerView = binding.list
         //The adapter receives the action that every item will do when clicked
         recyclerView.adapter = MovieListAdapter {
-            //TODO implement movie item onClick
+            //TODO pass bucket id
+            val action = BucketDetailFragmentDirections
+                .actionBucketDetailFragmentToMovieDetailFragment(0, it.id)
+            binding.root.findNavController().navigate(action)
         }
 
         recyclerView.layoutManager = when {
@@ -44,7 +48,8 @@ class MovieListFragment : Fragment() {
         }
     }
 
-    fun submitList(movies: List<Movie>){
+
+    fun submitList(movies: List<Movie>) {
         val adapter = binding.list.adapter as MovieListAdapter
         adapter.submitList(movies)
     }
