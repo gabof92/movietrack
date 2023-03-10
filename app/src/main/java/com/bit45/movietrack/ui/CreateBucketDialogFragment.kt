@@ -17,8 +17,6 @@ import com.bit45.movietrack.ui.viewmodel.BucketListViewModel
 import com.bit45.movietrack.ui.viewmodel.BucketListViewModelFactory
 import kotlinx.coroutines.launch
 
-private const val ARG_BUCKET_ID = "bucketId"
-
 /**
  * A simple [Fragment] subclass.
  * Use the [CreateBucketDialogFragment.newInstance] factory method to
@@ -32,18 +30,16 @@ class CreateBucketDialogFragment : DialogFragment() {
     private val viewModel: BucketListViewModel by activityViewModels {
         BucketListViewModelFactory(
             (activity?.application as MovieTrackApplication).database.bucketDao(),
+            (activity?.application as MovieTrackApplication).database.movieDao(),
+            (activity?.application as MovieTrackApplication).database.bucketMovieDao()
         )
     }
 
-    private var bucketId: Int? = null
     private var bucket = Bucket(null, "", "")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            bucketId = it.getInt(ARG_BUCKET_ID)
-            if(bucketId == 0)
-                bucketId = null
         }
     }
 
@@ -59,7 +55,8 @@ class CreateBucketDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.buttonSave.setOnClickListener { saveButtonAction() }
 
-        bucketId?.let {
+
+        viewModel.bucketId?.let {
             lifecycleScope.launch {
                 bucket = viewModel.getBucket(it)
                 requireActivity().runOnUiThread {
@@ -82,13 +79,13 @@ class CreateBucketDialogFragment : DialogFragment() {
                 if (insertOrUpdate())
                     closeDialog()
                 else
-                    showInsertErrorMessage()
+                    showInsertErrorMessage("There was an error updating the database")
             }
         }
     }
 
     private suspend fun insertOrUpdate(): Boolean {
-        enableSaveButton(false)
+        setButtonEnabled(false)
         val result = try {
             if (bucket.id == null)
                 viewModel.insertBucket(bucket)
@@ -99,18 +96,18 @@ class CreateBucketDialogFragment : DialogFragment() {
             Log.e("InsertTransaction", "Error inserting/updating bucket: $e")
             false
         }
-        enableSaveButton(true)
+        setButtonEnabled(true)
         return result
     }
 
-    private fun enableSaveButton(enable: Boolean) {
+    private fun setButtonEnabled(enable: Boolean) {
         requireActivity().runOnUiThread { binding.buttonSave.isEnabled = enable }
     }
 
-    private fun showInsertErrorMessage() {
+    private fun showInsertErrorMessage(message: String) {
         Toast.makeText(
             requireContext(),
-            "There was an error updating the database",
+            message,
             Toast.LENGTH_LONG
         )
             .show()
@@ -123,13 +120,9 @@ class CreateBucketDialogFragment : DialogFragment() {
     companion object {
         @JvmStatic
         fun newInstance(
-            bucketId: Int?
         ) =
             CreateBucketDialogFragment().apply {
                 arguments = Bundle().apply {
-                    if (bucketId != null) {
-                        putInt(ARG_BUCKET_ID, bucketId)
-                    }
                 }
             }
     }

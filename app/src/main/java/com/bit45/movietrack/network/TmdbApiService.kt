@@ -1,6 +1,8 @@
 package com.bit45.movietrack.network
 
-import com.bit45.movietrack.model.entity.Movie
+import android.net.Uri
+import androidx.core.net.toUri
+import com.bit45.movietrack.model.json.MovieJson
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
@@ -32,12 +34,16 @@ interface TmdbApiService {
     @GET("movie/{movie_id}")
     suspend fun getMovie(
         @Path("movie_id") id: Int,
-        @Query("api_key") apiKey: String = API_KEY
-    ): Movie
+        @Query("api_key") apiKey: String = API_KEY,
+        @Query("append_to_response") appendToResponse: String = "watch/providers,videos"
+    ): MovieJson
 }
 
 object TmdbApi {
     val retrofitService: TmdbApiService by lazy {
         retrofit.create(TmdbApiService::class.java)
+    }
+    fun getImageUri(path: String): Uri{
+        return (BASE_URL_IMG + path).toUri().buildUpon().scheme("https").build()
     }
 }
