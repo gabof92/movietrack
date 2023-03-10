@@ -17,14 +17,13 @@ import com.bit45.movietrack.MovieTrackApplication
 import com.bit45.movietrack.R
 import com.bit45.movietrack.databinding.FragmentBucketDetailBinding
 import com.bit45.movietrack.model.entity.Bucket
-import com.bit45.movietrack.ui.viewmodel.BucketDetailViewModel
-import com.bit45.movietrack.ui.viewmodel.BucketDetailViewModelFactory
+import com.bit45.movietrack.ui.viewmodel.BucketListViewModel
+import com.bit45.movietrack.ui.viewmodel.BucketListViewModelFactory
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
-// the fragment initialization parameters
-private const val ARG_ID = "bucketId"
 
 /**
  * A [Fragment] subclass.
@@ -36,19 +35,19 @@ class BucketDetailFragment : Fragment() {
     private var _binding: FragmentBucketDetailBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: BucketDetailViewModel by activityViewModels {
-        BucketDetailViewModelFactory(
+    private val viewModel: BucketListViewModel by activityViewModels {
+        BucketListViewModelFactory(
             (activity?.application as MovieTrackApplication).database.bucketDao(),
+            (activity?.application as MovieTrackApplication).database.movieDao(),
+            (activity?.application as MovieTrackApplication).database.bucketMovieDao(),
         )
     }
 
-    private var bucketId: Int? = null
     private var bucket: Bucket? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            bucketId = it.getInt(ARG_ID)
         }
     }
 
@@ -64,26 +63,18 @@ class BucketDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setUpMenu()
 
-        viewModel.setBucket(bucketId!!).onEach {
-            //After deletion the variable becomes null and onEach still gets called
-            if(it==null) return@onEach
-
-            bucket = it.bucket
-
-            //Update views in this fragment
-            (activity as MainActivity).supportActionBar?.title = bucket?.name
-            binding.bucketDescription.text = bucket?.description
-
-            //Pass movie list to MovieListFragment's list adapter
-            val movieFragment = childFragmentManager
-                .findFragmentById(binding.movieListContainer.id)
-            as MovieListFragment
-            movieFragment.submitList(it.movies)
-
-        }.launchIn(lifecycle.coroutineScope)
+        lifecycle.coroutineScope.launch {
+            viewModel.getBucketFlow(viewModel.bucketId!!).collect {
+                bucket = it
+                bucket?.let {
+                    //Update views in this fragment
+                    (activity as MainActivity).supportActionBar?.title = it.name
+                    binding.bucketDescription.text = it.description
+                }
+            }
+        }
 
     }
-
 
     private fun setUpMenu(){
         (requireActivity() as MenuHost).addMenuProvider(object: MenuProvider{
@@ -94,7 +85,7 @@ class BucketDetailFragment : Fragment() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
                     R.id.action_edit -> {
-                        val createBucketDialog = CreateBucketDialogFragment.newInstance(bucketId)
+                        val createBucketDialog = CreateBucketDialogFragment.newInstance()
                         createBucketDialog.show(parentFragmentManager, "create_bucket_dialog")
                         return true
                     }
@@ -153,10 +144,9 @@ class BucketDetailFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(bucketId: Int) =
+        fun newInstance() =
             BucketDetailFragment().apply {
                 arguments = Bundle().apply {
-                    putInt(ARG_ID, bucketId)
                 }
             }
     }

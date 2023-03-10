@@ -18,4 +18,7 @@ interface BucketMovieDao {
     @Query("SELECT * FROM bucket_movie")
     fun getAllBucketMoviesFlow(): Flow<List<BucketMovie>>
 
+    @Query("SELECT * FROM bucket_movie WHERE id_bucket = :bucketID AND id_movie = :movieId")
+    suspend fun getBucketMovie(bucketID: Int, movieId: Int): BucketMovie
+
 }

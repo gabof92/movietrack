@@ -17,7 +17,7 @@ abstract class AppDatabase: RoomDatabase() {
 
     abstract fun bucketDao(): BucketDao
     abstract fun movieDao(): MovieDao
-    abstract fun bucketMoviesDao(): BucketMovieDao
+    abstract fun bucketMovieDao(): BucketMovieDao
 
     companion object{
         @Volatile

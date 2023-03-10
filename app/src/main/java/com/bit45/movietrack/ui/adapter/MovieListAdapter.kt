@@ -4,7 +4,6 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -12,7 +11,7 @@ import coil.load
 import com.bit45.movietrack.R
 import com.bit45.movietrack.databinding.MovieListItemBinding
 import com.bit45.movietrack.model.entity.Movie
-import com.bit45.movietrack.network.BASE_URL_IMG
+import com.bit45.movietrack.network.TmdbApi
 
 class MovieListAdapter(
     private val onItemClicked: (Movie) -> Unit
@@ -49,12 +48,12 @@ class MovieListAdapter(
             binding.isWatchedIcon.isVisible = movie.isWatched
 
             val moviePoster = binding.moviePoster
-            val tmdbLogo = ContextCompat.getDrawable(moviePoster.context, R.drawable.ic_movie)
+            val noPosterIcon = ContextCompat.getDrawable(moviePoster.context, R.drawable.ic_movie)
             if(movie.image==null) {
-                moviePoster.setImageDrawable(tmdbLogo)
+                moviePoster.setImageDrawable(noPosterIcon)
                 return
             }
-            val url = (BASE_URL_IMG+movie.image).toUri().buildUpon().scheme("https").build()
+            val url = TmdbApi.getImageUri(movie.image!!)
             moviePoster.load(url){
                 placeholder(R.drawable.ic_downloading)
                 error(R.drawable.ic_no_internet)

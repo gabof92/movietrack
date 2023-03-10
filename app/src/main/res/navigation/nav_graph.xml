@@ -18,11 +18,8 @@
     <fragment
         android:id="@+id/bucketDetailFragment"
         android:name="com.bit45.movietrack.ui.BucketDetailFragment"
-        android:label="Bucket Name Here"
+        android:label="Bucket Detail"
         tools:layout="@layout/fragment_bucket_detail">
-        <argument
-            android:name="bucketId"
-            app:argType="integer" />
         <action
             android:id="@+id/action_bucketDetailFragment_to_movieDetailFragment"
             app:destination="@id/movieDetailFragment" />
@@ -31,14 +28,8 @@
     <fragment
         android:id="@+id/movieDetailFragment"
         android:name="com.bit45.movietrack.ui.MovieDetailFragment"
-        android:label="fragment_movie_detail"
+        android:label="Movie Detail"
         tools:layout="@layout/fragment_movie_detail">
-        <argument
-            android:name="bucketId"
-            app:argType="integer"/>
-        <argument
-            android:name="movieId"
-            app:argType="integer" />
     </fragment>
 
 </navigation>

@@ -16,10 +16,11 @@ interface MovieDao {
     suspend fun delete(movie: Movie)
 
     @Query("SELECT * FROM movie WHERE id = :id")
-    fun getMovie(id: Int): Flow<Movie>
+    suspend fun getMovie(id: Int): Movie
 
-    @Query("SELECT * FROM movie")
-    fun getAllMovies(): Flow<List<Movie>>
+    //Count will only return 0 or 1, which will act as boolean
+    @Query("SELECT COUNT(*) FROM movie WHERE id = :id")
+    suspend fun isMovieInDb(id: Int): Boolean
 
     @Query(
         "SELECT movie.* " +

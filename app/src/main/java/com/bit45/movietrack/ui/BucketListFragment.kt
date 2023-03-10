@@ -27,6 +27,8 @@ class BucketListFragment : Fragment() {
     private val viewModel: BucketListViewModel by activityViewModels {
         BucketListViewModelFactory(
             (activity?.application as MovieTrackApplication).database.bucketDao(),
+            (activity?.application as MovieTrackApplication).database.movieDao(),
+            (activity?.application as MovieTrackApplication).database.bucketMovieDao()
         )
     }
 
@@ -54,14 +56,16 @@ class BucketListFragment : Fragment() {
         }
 
         binding.createBucketButton.setOnClickListener {
-            val createBucketDialog = CreateBucketDialogFragment.newInstance(null)
+            viewModel.setBucketId(null)
+            val createBucketDialog = CreateBucketDialogFragment.newInstance()
             createBucketDialog.show(parentFragmentManager, "create_bucket_dialog")
         }
     }
 
     private fun openBucketDetail(bucketId: Int, view: View){
+        viewModel.setBucketId(bucketId)
         val action = BucketListFragmentDirections
-            .actionBucketsFragmentToBucketDetailFragment(bucketId)
+            .actionBucketsFragmentToBucketDetailFragment()
         view.findNavController().navigate(action)
     }
 
