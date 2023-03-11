@@ -3,7 +3,6 @@ package com.bit45.movietrack.ui
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,6 @@ import androidx.lifecycle.coroutineScope
 import androidx.navigation.findNavController
 import com.bit45.movietrack.MovieTrackApplication
 import com.bit45.movietrack.databinding.FragmentMovieListBinding
-import com.bit45.movietrack.model.entity.Movie
 import com.bit45.movietrack.ui.adapter.MovieListAdapter
 import com.bit45.movietrack.ui.viewmodel.BucketListViewModel
 import com.bit45.movietrack.ui.viewmodel.BucketListViewModelFactory
@@ -25,6 +23,10 @@ class MovieListFragment : Fragment() {
 
     private var _binding: FragmentMovieListBinding? = null
     private val binding get() = _binding!!
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
     private val viewModel: BucketListViewModel by activityViewModels {
         BucketListViewModelFactory(

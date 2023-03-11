@@ -23,6 +23,10 @@ class BucketListFragment : Fragment() {
 
     private var _binding: FragmentBucketListBinding? = null
     private val binding get() = _binding!!
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
     private val viewModel: BucketListViewModel by activityViewModels {
         BucketListViewModelFactory(

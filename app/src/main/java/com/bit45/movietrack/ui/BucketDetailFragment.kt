@@ -19,9 +19,6 @@ import com.bit45.movietrack.databinding.FragmentBucketDetailBinding
 import com.bit45.movietrack.model.entity.Bucket
 import com.bit45.movietrack.ui.viewmodel.BucketListViewModel
 import com.bit45.movietrack.ui.viewmodel.BucketListViewModelFactory
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 
@@ -34,6 +31,10 @@ class BucketDetailFragment : Fragment() {
 
     private var _binding: FragmentBucketDetailBinding? = null
     private val binding get() = _binding!!
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
     private val viewModel: BucketListViewModel by activityViewModels {
         BucketListViewModelFactory(
