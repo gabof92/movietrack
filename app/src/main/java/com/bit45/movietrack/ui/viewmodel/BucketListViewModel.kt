@@ -1,8 +1,10 @@
 package com.bit45.movietrack.ui.viewmodel
 
 import android.content.Context
+import android.content.Intent
 import android.telephony.TelephonyManager
 import android.util.Log
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.bit45.movietrack.data.dao.BucketDao
@@ -53,7 +55,6 @@ class BucketListViewModel(
         Movie(m.id, m.name, m.image, m.isWatched)
     )
 
-    suspend fun isMovieInDb(id: Int): Boolean = movieDao.isMovieInDb(id)
     suspend fun getMovie(id: Int): Movie = movieDao.getMovie(id)
 
     fun getMoviesByBucket(bucketId: Int): Flow<List<Movie>> = movieDao.getMoviesByBucket(bucketId)
@@ -109,12 +110,12 @@ class BucketListViewModel(
     }
 
     fun getTrailerVideo(movie: MovieJson): VideoJson? {
-        var videos = mutableListOf<VideoJson>()
+        val videos = mutableListOf<VideoJson>()
         movie.videoResponse?.videos?.let { videos.addAll(it) }
         //The filter will require an official video only if theres one in the list
-        var isOfficialNecessary = (videos.find { it.isOfficial } != null)
+        val isOfficialNecessary = (videos.find { it.isOfficial } != null)
         //Filter the list to get Official Youtube Trailers
-        var youtubeTrailers = videos.filter {
+        val youtubeTrailers = videos.filter {
             it.isOfficial == isOfficialNecessary && (it.type == VideoJson.TYPE_YOUTUBE) && (it.site == VideoJson.SITE_YOUTUBE)
         }
         //Return the best video available
@@ -136,8 +137,13 @@ class BucketListViewModel(
             Log.d("Country Code", countryCode.uppercase())
             return countryCode.uppercase()
         }
-
         return ""
+    }
+
+    fun launchInternetSite(link: String, context: Context){
+        val url = link.toUri().buildUpon().scheme("https").build()
+        val intent = Intent(Intent.ACTION_VIEW, url)
+        context.startActivity(intent)
     }
 }
 

@@ -26,6 +26,10 @@ class CreateBucketDialogFragment : DialogFragment() {
 
     private var _binding: FragmentCreateBucketDialogBinding? = null
     private val binding get() = _binding!!
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
     private val viewModel: BucketListViewModel by activityViewModels {
         BucketListViewModelFactory(

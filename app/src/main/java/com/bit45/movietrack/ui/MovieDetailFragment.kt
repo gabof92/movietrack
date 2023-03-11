@@ -1,10 +1,7 @@
 package com.bit45.movietrack.ui
 
-import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.telephony.TelephonyManager
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -22,8 +18,6 @@ import com.bit45.movietrack.MovieTrackApplication
 import com.bit45.movietrack.R
 import com.bit45.movietrack.databinding.FragmentMovieDetailBinding
 import com.bit45.movietrack.model.json.MovieJson
-import com.bit45.movietrack.model.json.Provider
-import com.bit45.movietrack.model.json.VideoJson
 import com.bit45.movietrack.network.TmdbApi
 import com.bit45.movietrack.ui.adapter.ProviderListAdapter
 import com.bit45.movietrack.ui.viewmodel.BucketListViewModel
@@ -44,6 +38,10 @@ class MovieDetailFragment : Fragment() {
 
     private var _binding: FragmentMovieDetailBinding? = null
     private val binding get() = _binding!!
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
     private val viewModel: BucketListViewModel by activityViewModels {
         BucketListViewModelFactory(
@@ -140,6 +138,12 @@ class MovieDetailFragment : Fragment() {
                 /** Setting up "Trailer" button */
                 val bestVideo = viewModel.getTrailerVideo(it)
                 binding.trailerButton.isEnabled = (bestVideo != null)
+                binding.trailerButton.setOnClickListener{
+                    bestVideo?.let {
+                        val youtubeLink: String = "https://www.youtube.com/watch?v="+it.key
+                        viewModel.launchInternetSite(youtubeLink, requireContext())
+                    }
+                }
             }
 
         }
