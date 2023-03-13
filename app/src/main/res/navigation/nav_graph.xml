@@ -23,6 +23,9 @@
         <action
             android:id="@+id/action_bucketDetailFragment_to_movieDetailFragment"
             app:destination="@id/movieDetailFragment" />
+        <action
+            android:id="@+id/action_bucketDetailFragment_to_movieSearchFragment"
+            app:destination="@id/movieSearchFragment" />
     </fragment>
 
     <fragment
@@ -30,6 +33,15 @@
         android:name="com.bit45.movietrack.ui.MovieDetailFragment"
         android:label="Movie Detail"
         tools:layout="@layout/fragment_movie_detail">
+    </fragment>
+    <fragment
+        android:id="@+id/movieSearchFragment"
+        android:name="com.bit45.movietrack.ui.MovieSearchFragment"
+        android:label="Search Movie"
+        tools:layout="@layout/fragment_movie_search" >
+        <action
+            android:id="@+id/action_movieSearchFragment_to_movieDetailFragment"
+            app:destination="@id/movieDetailFragment" />
     </fragment>
 
 </navigation>

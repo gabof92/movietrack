@@ -27,6 +27,8 @@ class BucketListViewModel(
     private val bucketMovieDao: BucketMovieDao,
 ) : ViewModel() {
 
+    /** Public properties with backing and setters */
+
     private var _bucketId: Int? = null
     val bucketId get() = _bucketId
     fun setBucketId(id: Int?) {
@@ -39,7 +41,7 @@ class BucketListViewModel(
         _movieId = id
     }
 
-
+    /** Bucket data access functions */
     fun getBucketList(): Flow<List<BucketWithMovies>> = bucketDao.getAllBucketsWithMovies()
     suspend fun getBucket(id: Int): Bucket = bucketDao.getBucket(id)
     fun getBucketFlow(id: Int): Flow<Bucket> = bucketDao.getBucketFlow(id)
@@ -47,7 +49,9 @@ class BucketListViewModel(
     suspend fun updateBucket(bucket: Bucket) = bucketDao.update(bucket)
     suspend fun deleteBucket(bucket: Bucket) = bucketDao.delete(bucket)
 
-    suspend fun insertMovieJson(m: MovieJson) = movieDao.insert(
+    /** Movie data access functions */
+
+    private suspend fun insertMovieJson(m: MovieJson) = movieDao.insert(
         Movie(m.id, m.name, m.image, m.isWatched)
     )
 
@@ -58,6 +62,8 @@ class BucketListViewModel(
     suspend fun getMovie(id: Int): Movie = movieDao.getMovie(id)
 
     fun getMoviesByBucket(bucketId: Int): Flow<List<Movie>> = movieDao.getMoviesByBucket(bucketId)
+
+    /** Bucket-Movie relation data access functions */
 
     suspend fun getCurrentBucketMovie(): BucketMovie =
         bucketMovieDao.getBucketMovie(bucketId!!, movieId!!)
@@ -72,6 +78,16 @@ class BucketListViewModel(
     suspend fun getMovieFromApi(): MovieJson? {
         return try {
             TmdbApi.retrofitService.getMovie(movieId!!)
+        } catch (e: Exception) {
+            Log.e(null, e.stackTraceToString())
+            null
+        }
+    }
+
+    suspend fun getMoviesFromApiSearch(movieTitle: String): List<Movie>? {
+        return try {
+            val searchResults = TmdbApi.retrofitService.searchMovies(movieTitle)
+            return searchResults.movies
         } catch (e: Exception) {
             Log.e(null, e.stackTraceToString())
             null
@@ -113,10 +129,10 @@ class BucketListViewModel(
         val videos = mutableListOf<VideoJson>()
         movie.videoResponse?.videos?.let { videos.addAll(it) }
         //The filter will require an official video only if theres one in the list
-        val isOfficialNecessary = (videos.find { it.isOfficial } != null)
+        val isOfficialNecessary = (videos.find { it.isOfficial && it.type==VideoJson.TYPE_TRAILER } != null)
         //Filter the list to get Official Youtube Trailers
         val youtubeTrailers = videos.filter {
-            it.isOfficial == isOfficialNecessary && (it.type == VideoJson.TYPE_YOUTUBE) && (it.site == VideoJson.SITE_YOUTUBE)
+            it.isOfficial == isOfficialNecessary && (it.type == VideoJson.TYPE_TRAILER) && (it.site == VideoJson.SITE_YOUTUBE)
         }
         //Return the best video available
         return if (youtubeTrailers.isNotEmpty())

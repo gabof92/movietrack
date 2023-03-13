@@ -72,8 +72,8 @@ class CreateBucketDialogFragment : DialogFragment() {
     }
 
     private fun saveButtonAction() {
-        bucket.name = binding.bucketName.text.toString()
-        bucket.description = binding.bucketDescription.text.toString()
+        bucket.name = binding.bucketName.text.toString().trim()
+        bucket.description = binding.bucketDescription.text.toString().trim()
 
         if (bucket.name.isBlank()) {
             binding.nameInputLayout.error = "Name can't be empty or blank"

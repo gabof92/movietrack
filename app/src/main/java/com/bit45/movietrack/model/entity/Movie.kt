@@ -12,11 +12,11 @@ data class Movie(
     @PrimaryKey
     var id: Int,
 
-    @Json(name = "original_title") var name: String,
+    @Json(name = "title") var name: String,
 
     @Json(name = "poster_path") var image: String?,
 
     @ColumnInfo(name = "is_watched")
     @Transient var isWatched: Boolean = false
 
-    )
+)

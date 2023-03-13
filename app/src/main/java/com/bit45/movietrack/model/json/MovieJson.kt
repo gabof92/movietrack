@@ -1,12 +1,13 @@
 package com.bit45.movietrack.model.json
 
+import com.bit45.movietrack.model.entity.Movie
 import com.squareup.moshi.Json
 
 data class MovieJson (
 
     var id: Int,
 
-    @Json(name = "original_title") var name: String,
+    @Json(name = "title") var name: String,
 
     @Json(name = "overview") var overview: String?,
 
@@ -18,6 +19,11 @@ data class MovieJson (
 
     @Json(name = "videos") var videoResponse: VideoResults?,
 
+    @Json(name = "adult") var isAdult: Boolean,
+
     @Transient var isWatched: Boolean = false
 )
 
+data class MovieSearchResult(
+    @Json(name = "results") val movies: List<Movie>
+)

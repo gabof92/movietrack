@@ -11,6 +11,7 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.bit45.movietrack.MainActivity
 import com.bit45.movietrack.MovieTrackApplication
@@ -73,6 +74,11 @@ class BucketDetailFragment : Fragment() {
                     binding.bucketDescription.text = it.description
                 }
             }
+        }
+        binding.buttonAddMovie.setOnClickListener {
+            val action = BucketDetailFragmentDirections
+                .actionBucketDetailFragmentToMovieSearchFragment()
+            view.findNavController().navigate(action)
         }
 
     }
