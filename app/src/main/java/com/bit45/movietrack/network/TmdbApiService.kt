@@ -3,6 +3,7 @@ package com.bit45.movietrack.network
 import android.net.Uri
 import androidx.core.net.toUri
 import com.bit45.movietrack.model.json.MovieJson
+import com.bit45.movietrack.model.json.MovieSearchResult
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
@@ -37,6 +38,13 @@ interface TmdbApiService {
         @Query("api_key") apiKey: String = API_KEY,
         @Query("append_to_response") appendToResponse: String = "watch/providers,videos"
     ): MovieJson
+
+    @GET("search/movie")
+    suspend fun searchMovies(
+        @Query("query") title: String,
+        @Query("include_adult") adult: Boolean = false,
+        @Query("api_key") apiKey: String = API_KEY
+    ): MovieSearchResult
 }
 
 object TmdbApi {

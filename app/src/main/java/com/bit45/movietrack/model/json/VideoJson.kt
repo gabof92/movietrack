@@ -14,7 +14,7 @@ data class VideoJson(
 
     companion object {
         const val SITE_YOUTUBE = "YouTube"
-        const val TYPE_YOUTUBE = "Trailer"
+        const val TYPE_TRAILER = "Trailer"
     }
 }
 
