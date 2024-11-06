@@ -1,6 +1,6 @@
 # 🎬 MovieTracker
 
-**MovieTracker** is a simple app to help you keep track of movies you've watched and want to watch. Using **TheMovieDatabase (TMDb) API**, MovieTracker makes it easy to search for movies, find out where they're available to stream, buy, or rent, and watch trailers on YouTube.
+**MovieTracker** is a simple Android app to help you keep track of movies you've watched and want to watch. Using **TheMovieDatabase (TMDb) API**, MovieTracker makes it easy to search for movies, find out where they're available to stream, buy, or rent, and watch trailers on YouTube.
 
 ## Features
 
@@ -17,14 +17,14 @@
 
 1. Clone the repo.
 2. Add your TMDb API key to your environment variables.
-3. Run the app and start tracking your movies!
+3. Build and install the app on your Android device to start tracking your movies!
 
 ## Technologies Used
 
-- **React / Vue / Angular** (Frontend)
-- **Express / Flask** (Backend)
-- **TMDb API** for movie data
-- **YouTube API** for trailer integration
+- **Kotlin** for Android development
+- **Retrofit** for network requests to the TMDb API
+- **Coil** for loading movie images
+- **Room Database** for local storage of movie lists
 
 ---
 
