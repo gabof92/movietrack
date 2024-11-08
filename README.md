@@ -1,6 +1,6 @@
-# 🎬 MovieTracker
+# 🎬 MovieTrack
 
-**MovieTracker** is a simple Android app to help you keep track of movies you've watched and want to watch. Using **TheMovieDatabase (TMDb) API**, MovieTracker makes it easy to search for movies, find out where they're available to stream, buy, or rent, and watch trailers on YouTube.
+**MovieTrack** is a simple Android app to help you keep track of movies you've watched and want to watch. Using **TheMovieDatabase (TMDb) API**, MovieTracker makes it easy to search for movies, find out where they're available to stream, buy, or rent, and watch trailers on YouTube.
 
 ## Features
 
